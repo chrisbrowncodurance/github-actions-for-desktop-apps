@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
+
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
 
@@ -14,11 +13,10 @@ namespace MyWPFApp.Telemetry
 
         public static void Initialize()
         {
-            TelemetryConfiguration.Active.TelemetryInitializers.Add(new AppVersionTelemetryInitializer());
-            TelemetryConfiguration.Active.TelemetryInitializers.Add(new EnvironmentTelemetryInitializer());
-
             _initialized = true;
-            _client = new TelemetryClient();
+            _client = new TelemetryClient(null);
+            _client.TelemetryConfiguration.TelemetryInitializers.Add(new AppVersionTelemetryInitializer());
+            _client.TelemetryConfiguration.TelemetryInitializers.Add(new EnvironmentTelemetryInitializer());
             System.Windows.Application.Current.Startup += Application_Startup;
             System.Windows.Application.Current.Exit += Application_Exit;
             System.Windows.Application.Current.DispatcherUnhandledException += DispatcherUnhandledException;
